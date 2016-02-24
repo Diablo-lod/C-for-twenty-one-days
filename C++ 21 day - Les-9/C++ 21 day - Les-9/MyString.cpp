@@ -10,6 +10,7 @@ using namespace std;
 //Описываем конструктор для класса MyString
 MyString::MyString(const char* InitialInput)
 {
+	cout <<  "Constructor:  creating new MyString"  << endl;
 	//если передали не нулевой параметр, то создаем динамический массив чаров
 	if (InitialInput != NULL)
 	{
@@ -17,6 +18,9 @@ MyString::MyString(const char* InitialInput)
 		Buffer = new char[strlen(InitialInput) + 1];
 		//копируем строку в буфер
 		strcpy(Buffer, InitialInput);
+		// Отображение адреса области памяти локального буфера
+		cout <<  "Buffer points  to:  Ox"  << hex;
+		cout << (unsigned int*)Buffer << endl;
 	}
 	else
 		Buffer = NULL;
@@ -31,6 +35,29 @@ MyString::~MyString()
 	{
 		delete[] Buffer;
 	}
+}
+
+//Опишем конструктор копий
+//Код в конструкторе копий очень похож на таковой в конструкторе.
+//Основная  идея  та  же  —  выяснить  длину  строки  в  стиле  С, которая
+//содержится  в  буфе­ре  оригинала, зарезервировать достаточно
+//памяти  в  собственном  экземпляре
+MyString::MyString(const MyString& CopySource)//важно передавать по ссылке параметр!!!
+{
+	cout <<  "Copy constructor:  copying from MyString"  << endl;
+	if (CopySource.Buffer != NULL)
+	{
+		//  гарантировать  ГЛУБОКОЕ копирование,  создав сначала
+		//  собственный буфер
+		Buffer = new char[strlen(CopySource.Buffer) + 1];
+		//  копирование из оригинала в локальный буфер
+		strcpy(Buffer, CopySource.Buffer);
+		// Отображение адреса области памяти локального буфера
+		cout <<  "Buffer points  to:  Ox"  << hex;
+		cout << (unsigned int*)Buffer << endl;
+	}
+	else
+		Buffer = NULL;
 }
 
 //Узнаем длинну строки
